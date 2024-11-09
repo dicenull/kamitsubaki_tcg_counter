@@ -10,31 +10,20 @@ class MyApp extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final vol = useState(0);
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('VOL: ${vol.value}'),
-        ),
         body: Center(
           child: Column(
             children: [
+              Text('VOL',
+                  style: TextStyle(fontSize: 40, color: Colors.yellow[700])),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    child: const Icon(Icons.add),
-                    onPressed: () {
-                      vol.value++;
-                    },
-                  ),
-                  ElevatedButton(
-                    child: const Icon(Icons.remove),
-                    onPressed: () {
-                      vol.value--;
-                    },
-                  ),
-                ],
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [...List.generate(5, (i) => const Vol())],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [...List.generate(5, (i) => const Vol())],
               ),
               Flexible(
                 child: Row(
@@ -83,6 +72,36 @@ class MyApp extends HookWidget {
   }
 }
 
+class Vol extends HookWidget {
+  const Vol({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final isActive = useState(false);
+    final size = MediaQuery.sizeOf(context).height / 12;
+
+    return InkWell(
+      customBorder: const CircleBorder(),
+      onTap: () {
+        isActive.value = !isActive.value;
+      },
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: isActive.value ? Colors.yellow : Colors.grey,
+            shape: BoxShape.circle,
+          ),
+          height: size,
+          width: size,
+        ),
+      ),
+    );
+  }
+}
+
 class Magic extends HookWidget {
   final Color color;
 
@@ -94,7 +113,7 @@ class Magic extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final isActive = useState(false);
-    final size = MediaQuery.sizeOf(context).width / 8;
+    final size = MediaQuery.sizeOf(context).height / 10;
 
     return InkWell(
       customBorder: const CircleBorder(),
